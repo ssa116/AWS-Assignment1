@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
-
 app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
+// Before the other routes
+app.use(express.static("build"))
+
+// the other resource routes
 
 
 const pokemons = [
@@ -15,19 +19,11 @@ const pokemons = [
   }
 ]
 
-// Before the other routes
-app.use(express.static("build"))
-
-// the other resource routes
-
 
 app.get("/api/pokemons", (req, res) => {
   console.log("GET /api/pokemons")
   res.send({pokemons: pokemons})
 });
-
-
-
 
 
 app.post("/api/pokemons", (req, res) => {
@@ -36,6 +32,7 @@ app.post("/api/pokemons", (req, res) => {
   data.id = pokemons.length+1
   pokemons.push(data)
   res.send(data)
+// res.redirect("/")
 })
 
 // After all other routes
